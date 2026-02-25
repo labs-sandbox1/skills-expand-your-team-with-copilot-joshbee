@@ -8,6 +8,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const activityInput = document.getElementById("activity");
   const closeRegistrationModal = document.querySelector(".close-modal");
 
+  // Dark mode toggle elements
+  const darkModeToggle = document.getElementById("dark-mode-toggle");
+  const toggleIcon = darkModeToggle.querySelector(".toggle-icon");
+  const toggleText = darkModeToggle.querySelector("span:last-child");
+
   // Search and filter elements
   const searchInput = document.getElementById("activity-search");
   const searchButton = document.getElementById("search-button");
@@ -50,6 +55,34 @@ document.addEventListener("DOMContentLoaded", () => {
     afternoon: { start: "15:00", end: "18:00" }, // After school hours
     weekend: { days: ["Saturday", "Sunday"] }, // Weekend days
   };
+
+  // Dark mode functionality
+  function initializeDarkMode() {
+    const savedTheme = localStorage.getItem("darkMode");
+    if (savedTheme === "enabled") {
+      document.body.classList.add("dark-mode");
+      updateDarkModeToggle(true);
+    }
+  }
+
+  function toggleDarkMode() {
+    const isDarkMode = document.body.classList.toggle("dark-mode");
+    localStorage.setItem("darkMode", isDarkMode ? "enabled" : "disabled");
+    updateDarkModeToggle(isDarkMode);
+  }
+
+  function updateDarkModeToggle(isDarkMode) {
+    if (isDarkMode) {
+      toggleIcon.textContent = "☀️";
+      toggleText.textContent = "Light Mode";
+    } else {
+      toggleIcon.textContent = "🌙";
+      toggleText.textContent = "Dark Mode";
+    }
+  }
+
+  // Event listener for dark mode toggle
+  darkModeToggle.addEventListener("click", toggleDarkMode);
 
   // Initialize filters from active elements
   function initializeFilters() {
@@ -862,6 +895,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Initialize app
+  initializeDarkMode();
   checkAuthentication();
   initializeFilters();
   fetchActivities();
